@@ -10,10 +10,12 @@ short_moves = ['r', 'p', 's']
 """The Player class is the parent class for all of the Players
 in this game"""
 
+
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
             (one == 'paper' and two == 'rock'))
+
 
 def convert_human_input_to_full_move_name(short_move):
     if short_move == 'r':
@@ -22,6 +24,7 @@ def convert_human_input_to_full_move_name(short_move):
         return 'paper'
     else:
         return 'scissors'
+
 
 class Player:
     def __init__(self):
@@ -34,9 +37,11 @@ class Player:
         self.my_last_move = my_move
         self.their_last_move = their_move
 
+
 class RandomPlayer(Player):
     def move(self):
         return random.choice(moves)
+
 
 class ReflectPlayer(Player):
     def __init__(self):
@@ -46,11 +51,12 @@ class ReflectPlayer(Player):
     def move(self):
         return self.their_last_move
 
+
 class CyclePlayer(Player):
     def __init__(self):
         super().__init__()
         self.my_last_move = random.choice(moves)
-    
+
     def move(self):
         if self.my_last_move == 'rock':
             return 'paper'
@@ -59,10 +65,13 @@ class CyclePlayer(Player):
         else:
             return 'rock'
 
+
 class HumanPlayer(Player):
     def move(self):
         # Get human input
-        human_input = input('Play (p) for paper, (r) for rock, (s) for scissors OR (q) for quitting the game: ')
+        human_input = input('Play (p) for paper, (r) for rock, '
+                            + '(s) for scissors OR '
+                            + '(q) for quitting the game: ')
         if human_input in short_moves:
             return convert_human_input_to_full_move_name(human_input)
         elif human_input == 'q':
@@ -70,6 +79,7 @@ class HumanPlayer(Player):
         else:
             print('You entered an invalid character.')
             self.move()
+
 
 class Game:
     def __init__(self, p1, p2):
@@ -82,7 +92,7 @@ class Game:
 
         # Checking if a human entered q to quit the game.
         if (move1 == 'q') or (move2 == 'q'):
-            return 'exit' 
+            return 'exit'
         print(f"Player 1: {move1}  Player 2: {move2}")
         # Checking the winner
         if beats(move1, move2):
@@ -94,7 +104,8 @@ class Game:
         else:
             print("TIE!")
         # Print scores
-        print(f"Scores: (Player 1: {self.p1.score}),  (Player 2: {self.p2.score})\n")
+        print(f"Scores: (Player 1: {self.p1.score}),  "
+              + "(Player 2: {self.p2.score})\n")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
@@ -105,9 +116,11 @@ class Game:
             roundValue = self.play_round()
             if roundValue == 'exit':
                 break
-        
+
         # Announce the winner
-        print('==================================\n==================================\nGame Final Results are:')
+        print('==================================\n'
+              + '==================================\n'
+              + 'Game Final Results are:')
         print(f'Player 1: {self.p1.score},   Player 2: {self.p2.score}')
         if self.p1.score > self.p2.score:
             print('Player 1 is THE WINNER!')
