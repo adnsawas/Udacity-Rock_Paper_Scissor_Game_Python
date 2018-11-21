@@ -105,7 +105,7 @@ class Game:
             print("TIE!")
         # Print scores
         print(f"Scores: (Player 1: {self.p1.score}),  "
-              + "(Player 2: {self.p2.score})\n")
+              + f"(Player 2: {self.p2.score})\n")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
