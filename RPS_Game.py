@@ -17,7 +17,7 @@ def beats(one, two):
             (one == 'paper' and two == 'rock'))
 
 
-def convert_human_input_to_full_move_name(short_move):
+def convert_human_input(short_move):
     if short_move == 'r':
         return 'rock'
     elif short_move == 'p':
@@ -71,9 +71,9 @@ class HumanPlayer(Player):
         # Get human input
         human_input = input('Play (p) for paper, (r) for rock, '
                             + '(s) for scissors OR '
-                            + '(q) for ending the game: ')
+                            + '(q) for ending the game: ').lower()
         if human_input in short_moves:
-            return convert_human_input_to_full_move_name(human_input)
+            return convert_human_input(human_input)
         elif human_input == 'q':
             return 'q'
         else:
@@ -136,7 +136,7 @@ class Game:
 
 def select_computer_mode():
     computer_mode = input('Select the computer play style '
-                          + '(random, reflect, cycle): ')
+                          + '(random, reflect, cycle): ').lower()
     if computer_mode == 'random':
         return Game(HumanPlayer(), RandomPlayer())
     elif computer_mode == 'reflect':
