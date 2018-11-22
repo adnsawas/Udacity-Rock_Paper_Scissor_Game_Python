@@ -71,14 +71,14 @@ class HumanPlayer(Player):
         # Get human input
         human_input = input('Play (p) for paper, (r) for rock, '
                             + '(s) for scissors OR '
-                            + '(q) for quitting the game: ')
+                            + '(q) for ending the game: ')
         if human_input in short_moves:
             return convert_human_input_to_full_move_name(human_input)
         elif human_input == 'q':
             return 'q'
         else:
             print('You entered an invalid character.')
-            self.move()
+            return self.move()
 
 
 class Game:
@@ -105,21 +105,22 @@ class Game:
             print("TIE!")
         # Print scores
         print(f"Scores: (Player 1: {self.p1.score}),  "
-              + f"(Player 2: {self.p2.score})\n")
+              + f"(Player 2: {self.p2.score})")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
     def play_game(self):
         print("Game start!")
         for round in range(5):
-            print(f"==================================\nRound {round}:")
+            print(f"\n=================Round {round + 1}==================")
             roundValue = self.play_round()
             if roundValue == 'exit':
+                print('Ending game. Calaculating results...')
                 break
 
         # Announce the winner
-        print('==================================\n'
-              + '==================================\n'
+        print('\n\n=====================================\n'
+              + '=====================================\n'
               + 'Game Final Results are:')
         print(f'Player 1: {self.p1.score},   Player 2: {self.p2.score}')
         if self.p1.score > self.p2.score:
@@ -128,9 +129,26 @@ class Game:
             print('Player 2 is THE WINNER!')
         else:
             print('It\'s a TIE. NO WINNER!')
-        print("\nThe game is over!\n")
+        print("\nThe game is over!\n"
+              + '=====================================\n'
+              + '=====================================\n')
+
+
+def select_computer_mode():
+    computer_mode = input('Select the computer play style '
+                          + '(random, reflect, cycle): ')
+    if computer_mode == 'random':
+        return Game(HumanPlayer(), RandomPlayer())
+    elif computer_mode == 'reflect':
+        return Game(HumanPlayer(), ReflectPlayer())
+    elif computer_mode == 'cycle':
+        return Game(HumanPlayer(), CyclePlayer())
+    else:
+        print('You entered an invalid play style.')
+        return select_computer_mode()
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), ReflectPlayer())
+    # Prompt the user to select which mode the computer will play.
+    game = select_computer_mode()
     game.play_game()
